@@ -18,3 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::post('/adapt', 'AdaptController@adaptrequest');
+
+Route::get('/getclass/{batch}/{semester}', 'HomeController@getclass');

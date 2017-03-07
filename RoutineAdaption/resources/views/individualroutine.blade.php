@@ -17,13 +17,12 @@ $semesters = DB::table('routines')
 function getData($time, $day, $year, $sem) {
   $userid = Auth::user()->id;
   return $data = DB::table('routines')
-            ->join('courses', 'routines.teacher_id', '=', 'courses.t_id')
+            ->join('courses', 'routines.course_id', '=', 'courses.id')
             ->select('routines.id', 'routines.start_time', 'routines.end_time', 'courses.title')
             ->where('start_time', $time)
             ->where('day', $day)
             ->where('year', $year)
             ->where('semester', $sem)
-            ->where('teacher_id', $userid)
             ->first();
 }
 ?>
@@ -137,9 +136,17 @@ function getData($time, $day, $year, $sem) {
         <label>Batch
           <select id="batch">
             <?php
-              echo "<option value=\"All\">All</option>";
+             if($param_batch=="All"){
+               echo "<option value=\"All\" selected>All</option>";
+             }else
+                echo "<option value=\"All\">All</option>";
               foreach ($years as $batch) {
-                  echo "<option value=\"".$batch->year."\">".$batch->year."</option>";
+                  if($param_batch ==  $batch->year){
+                    echo "<option value=\"".$batch->year."\" selected>".$batch->year."</option>";
+
+                  }else
+                    echo "<option value=\"".$batch->year."\">".$batch->year."</option>";
+
               }
              ?>
           </select>
@@ -147,9 +154,17 @@ function getData($time, $day, $year, $sem) {
         <label>Semester
           <select id="semester">
             <?php
-            echo "<option value=\"All\">All</option>";
+            if($param_semester=="All"){
+              echo "<option value=\"All\" selected>All</option>";
+            }else
+               echo "<option value=\"All\">All</option>";
             foreach ($semesters as $semester) {
-                echo "<option value=\"".$semester->semester."\">".$semester->semester."</option>";
+              if($param_semester == $semester->semester){
+                echo "<option value=\"".$semester->semester."\" selected>".$semester->semester."</option>";
+
+              }else
+              echo "<option value=\"".$semester->semester."\">".$semester->semester."</option>";
+
             }
             ?>
             </select>
@@ -186,7 +201,7 @@ function getData($time, $day, $year, $sem) {
                 $i = 0;
                 while($i<10){
                   $dif = 0;
-                  $data = getData($time[$i], 'Sunday', '2012', '8');
+                  $data = getData($time[$i], 'Sunday', $param_batch, $param_semester);
                   if($i!=5){
                     if($data!=null){
                       $dif = abs($data->start_time - $data->end_time);
@@ -212,7 +227,7 @@ function getData($time, $day, $year, $sem) {
 
               while($i<10){
                   $dif = 0;
-                $data = getData($time[$i], 'Monday', '2012', '8');
+                $data = getData($time[$i], 'Monday', $param_batch, $param_semester);
                 if($i!=5){
                   if($data!=null){
                     $dif = abs($data->start_time - $data->end_time);
@@ -237,7 +252,7 @@ function getData($time, $day, $year, $sem) {
               $i = 0;
               while($i<10){
                   $dif = 0;
-                $data = getData($time[$i], 'Tuesday', '2012', '8');
+                $data = getData($time[$i], 'Tuesday', $param_batch, $param_semester);
                 if($i!=5){
                   if($data!=null){
                     $dif = abs($data->start_time - $data->end_time);
@@ -263,7 +278,7 @@ function getData($time, $day, $year, $sem) {
 
               while($i<10){
                 $dif = 0;
-                $data = getData($time[$i], 'Wednesday', '2012', '8');
+                $data = getData($time[$i], 'Wednesday', $param_batch, $param_semester);
                 if($i!=5){
                   if($data!=null){
                     $dif = abs($data->start_time - $data->end_time);
@@ -289,7 +304,7 @@ function getData($time, $day, $year, $sem) {
 
               while($i<10){
                 $dif = 0;
-                $data = getData($time[$i], 'Thursday', '2012', '8');
+                $data = getData($time[$i], 'Thursday', $param_batch, $param_semester);
                 if($i!=5){
                   if($data!=null){
                     $dif = abs($data->start_time - $data->end_time);
@@ -315,8 +330,8 @@ function getData($time, $day, $year, $sem) {
 <div id="snackbar">You can not put that class there</div>
 </center>
 
-<link rel="stylesheet" type="text/css" href="css/home.css" />
-<script type="text/javascript" src="js/home.js"></script>
+<link rel="stylesheet" type="text/css" href="http://localhost:8000/css/individualroutine.css" />
+<script type="text/javascript" src="http://localhost:8000/js/individualroutine.js"></script>
 
 </body>
 </html>

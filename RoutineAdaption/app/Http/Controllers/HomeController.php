@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
+
 
 class HomeController extends Controller
 {
@@ -23,6 +23,18 @@ class HomeController extends Controller
      */
     public function index()
     {
+      //return \Auth::user()->id;
         return view('home');
+    }
+
+    public function getclass($batch, $semester)
+    {
+      //return \Auth::user()->id;
+        if(($batch == "All") && ($semester == "All")){
+            return redirect('home');
+        }else{
+            return view('individualroutine')->with('param_batch', $batch)->with('param_semester', $semester);
+        }
+
     }
 }
