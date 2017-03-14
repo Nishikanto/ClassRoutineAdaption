@@ -10,7 +10,7 @@
         background:#eee;
     }
     .right{
-        width:900px;
+        width:100%;
     }
     .right table{
         background:#E0ECFF;
@@ -22,6 +22,8 @@
         text-align:center;
         padding:5px;
         border:solid;
+        border-width: thin;
+        width: 100px;
     }
     .right td{
         background:#E0ECFF;
@@ -41,7 +43,9 @@
         border:1px solid #499B33;
         background:#fafafa;
         color:#444;
-        width:100px;
+        padding: 2px;
+
+
     }
     .assigned{
         border:1px solid #BC2A4D;
@@ -49,6 +53,7 @@
     .trash{
         background-color:red;
     }
+
 
     /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
