@@ -19,7 +19,7 @@ function getData($time, $day, $year, $sem) {
   return $data = DB::table('routines')
             ->join('courses', 'routines.course_id', '=', 'courses.id')
             ->join('users', 'courses.t_id', '=', 'users.id')
-            ->select('users.name', 'courses.course_no', 'routines.id', 'routines.start_time', 'routines.end_time', 'courses.title')
+            ->select('users.name', 'courses.course_no', 'routines.room_id', 'routines.id', 'routines.start_time', 'routines.end_time', 'courses.title')
             ->where('start_time', $time)
             ->where('day', $day)
             ->where('year', $year)
@@ -214,7 +214,7 @@ function getData($time, $day, $year, $sem) {
                           $subjects .= substr($value, 0, 1);
                       }
 
-                      $row = "<td id=\"1".($i+1)."\" data-dif=\"".$dif."\" data-id=\"1".($i+1)."\" data-day=\"Sunday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"popup item assigned\"><p>CSE-".$data->course_no."</br>".$subjects."</p></div></td>";
+                      $row = "<td id=\"1".($i+1)."\" data-dif=\"".$dif."\" data-id=\"1".($i+1)."\" data-day=\"Sunday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"popup item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
                       $i = $i + $dif;
                     }
                     else{
@@ -247,7 +247,7 @@ function getData($time, $day, $year, $sem) {
                         $subjects .= substr($value, 0, 1);
                     }
 
-                    $row = "<td id=\"2".($i+1)."\" data-dif=\"".$dif."\" data-id=\"2".($i+1)."\" data-day=\"Monday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>CSE-".$data->course_no."</br>".$subjects."</p></div></td>";
+                    $row = "<td id=\"2".($i+1)."\" data-dif=\"".$dif."\" data-id=\"2".($i+1)."\" data-day=\"Monday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
                     $i = $i + $dif;
                   }
                   else{
@@ -279,7 +279,7 @@ function getData($time, $day, $year, $sem) {
                         $subjects .= substr($value, 0, 1);
                     }
 
-                    $row = "<td id=\"3".($i+1)."\" data-dif=\"".$dif."\" data-id=\"3".($i+1)."\" data-day=\"Tuesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>CSE-".$data->course_no."</br>".$subjects."</p></div></td>";
+                    $row = "<td id=\"3".($i+1)."\" data-dif=\"".$dif."\" data-id=\"3".($i+1)."\" data-day=\"Tuesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
                     $i = $i + $dif;
                   }
                   else{
@@ -312,7 +312,7 @@ function getData($time, $day, $year, $sem) {
                         $subjects .= substr($value, 0, 1);
                     }
 
-                    $row = "<td id=\"4".($i+1)."\" data-dif=\"".$dif."\" data-id=\"4".($i+1)."\" data-day=\"Wednesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>CSE-".$data->course_no."</br>".$subjects."</p></div></td>";
+                    $row = "<td id=\"4".($i+1)."\" data-dif=\"".$dif."\" data-id=\"4".($i+1)."\" data-day=\"Wednesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
                     $i = $i + $dif;
                   }
                   else{
@@ -345,7 +345,7 @@ function getData($time, $day, $year, $sem) {
                         $subjects .= substr($value, 0, 1);
                     }
 
-                    $row = "<td id=\"5".($i+1)."\" data-dif=\"".$dif."\" data-id=\"5".($i+1)."\" data-day=\"Thursday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>CSE-".$data->course_no."</br>".$subjects."</p></div></td>";
+                    $row = "<td id=\"5".($i+1)."\" data-dif=\"".$dif."\" data-id=\"5".($i+1)."\" data-day=\"Thursday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
                     $i = $i + $dif;
                   }
                   else{

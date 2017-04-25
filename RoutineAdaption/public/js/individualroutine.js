@@ -76,16 +76,22 @@ $(function() {
 
         //console.log($newday);
 
+        $batch = document.getElementById('batch').value;
+        $semester = document.getElementById('semester').value;
+
         var data = new FormData();
         data.append('id', $id);
         data.append('day', $newday);
         data.append('time', $newtime);
+        data.append('batch', $batch);
+        data.append('semester', $semester);
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://localhost:8000/adapt', true);
         xhr.onload = function() {
           // do something to response
           console.log(this.responseText);
+          location.reload();
         };
         xhr.send(data);
       } else {
