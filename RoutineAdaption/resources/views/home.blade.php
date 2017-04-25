@@ -222,6 +222,14 @@ function getData($time, $day) {
                 if($i!=5){
                   if($data!=null){
                     $dif = abs($data->start_time - $data->end_time);
+
+                    $words = explode(" ", $data->title);
+                    $subjects = "";
+                    foreach ($words as $value) {
+                        $subjects .= substr($value, 0, 1);
+                    }
+
+
                     $row = "<td id=\"2".($i+1)."\" data-dif=\"".$dif."\" data-id=\"2".($i+1)."\" data-day=\"Monday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
                     $i = $i + $dif;
                   }
@@ -247,6 +255,14 @@ function getData($time, $day) {
                 if($i!=5){
                   if($data!=null){
                     $dif = abs($data->start_time - $data->end_time);
+
+                    $words = explode(" ", $data->title);
+                    $subjects = "";
+                    foreach ($words as $value) {
+                        $subjects .= substr($value, 0, 1);
+                    }
+
+
                     $row = "<td id=\"3".($i+1)."\" data-dif=\"".$dif."\" data-id=\"3".($i+1)."\" data-day=\"Tuesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
                     $i = $i + $dif;
                   }
@@ -273,6 +289,14 @@ function getData($time, $day) {
                 if($i!=5){
                   if($data!=null){
                     $dif = abs($data->start_time - $data->end_time);
+
+                    $words = explode(" ", $data->title);
+                    $subjects = "";
+                    foreach ($words as $value) {
+                        $subjects .= substr($value, 0, 1);
+                    }
+
+
                     $row = "<td id=\"4".($i+1)."\" data-dif=\"".$dif."\" data-id=\"4".($i+1)."\" data-day=\"Wednesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
                     $i = $i + $dif;
                   }
@@ -299,6 +323,14 @@ function getData($time, $day) {
                 if($i!=5){
                   if($data!=null){
                     $dif = abs($data->start_time - $data->end_time);
+
+                    $words = explode(" ", $data->title);
+                    $subjects = "";
+                    foreach ($words as $value) {
+                        $subjects .= substr($value, 0, 1);
+                    }
+
+
                     $row = "<td id=\"5".($i+1)."\" data-dif=\"".$dif."\" data-id=\"5".($i+1)."\" data-day=\"Thursday\" data-time=".$time[$i]." colspan = ".$dif."><div data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
                     $i = $i + $dif;
                   }
