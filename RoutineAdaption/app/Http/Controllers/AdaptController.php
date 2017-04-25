@@ -14,8 +14,10 @@ class AdaptController extends Controller
         $batch = $request->batch;
         $semester = $request->semester;
 
+        
 
-        return view('individualroutine')->with('param_batch', $batch)->with('param_semester', $semester);
+
+        //return view('individualroutine')->with('param_batch', $batch)->with('param_semester', $semester);
 
 
     }
