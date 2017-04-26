@@ -12,7 +12,7 @@ class RecordsTableSeeder extends Seeder
     public function run()
     {
         //
-
+        /*
         DB::table('records')->insert([ //sunday dsp theory
             'start_time' => '8',
             'end_time' => '11',
@@ -85,5 +85,6 @@ class RecordsTableSeeder extends Seeder
             'room_id' => '3',
             'routine_id' => '7',
         ]);
+        */
     }
 }

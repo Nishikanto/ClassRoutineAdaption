@@ -62,7 +62,7 @@ function getData($time, $day) {
     </script>
 
 </head>
-<body>
+<body style="background:#E0E0E0">
 
 
 
@@ -80,7 +80,7 @@ function getData($time, $day) {
 
               <!-- Branding Image -->
               <a class="navbar-brand" href="{{ url('/') }}">
-                  {{ config('app.name', 'Laravel') }}
+                  Class Routine Adaption
               </a>
           </div>
 

@@ -71,10 +71,19 @@ $(function() {
         $(this).append(source);
         $(source).parent('td').addClass('drop');
         $id = $(source).attr('data-id');
+        $dif = $(source).attr('data-dif');
+        $oldtime = $(source).attr('data-time');
+        $oldday = $(source).attr('data-day');
+        $room_id = $(source).attr('data-room_id');
+        $teacher_id = $(source).attr('data-teacher_id');
+
+
         $newday = $(this).attr('data-day');
         $newtime = $(this).attr('data-time');
 
-        //console.log($newday);
+
+
+        console.log($room_id + $teacher_id);
 
         $batch = document.getElementById('batch').value;
         $semester = document.getElementById('semester').value;
@@ -85,13 +94,19 @@ $(function() {
         data.append('time', $newtime);
         data.append('batch', $batch);
         data.append('semester', $semester);
+        data.append('dif', $dif);
+        data.append('oldtime', $oldtime);
+        data.append('oldday', $oldday);
+        data.append('room_id', $room_id);
+        data.append('teacher_id', $teacher_id);
+
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://localhost:8000/adapt', true);
         xhr.onload = function() {
           // do something to response
           console.log(this.responseText);
-          location.reload();
+          //location.reload();
         };
         xhr.send(data);
       } else {
