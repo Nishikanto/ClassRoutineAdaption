@@ -60,6 +60,56 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('reg') ? ' has-error' : '' }}">
+                            <label for="reg" class="col-md-4 control-label">Registration No.</label>
+
+                            <div class="col-md-6">
+                                <input id="reg" type="text" class="form-control" name="reg" value="{{ old('reg') }}" required autofocus>
+
+                                @if ($errors->has('reg'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('reg') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('dept') ? ' has-error' : '' }}">
+                            <label for="dept" class="col-md-4 control-label">Department</label>
+
+                            <div class="col-md-6">
+                                <select name="dept">
+                                  <option value="CSE">CSE</option>
+                                </select>
+
+                                @if ($errors->has('dept'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('dept') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+
+                        <div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
+                            <label for="role" class="col-md-4 control-label">Role</label>
+
+                            <div class="col-md-6">
+                                <select name="role">
+                                  <option value="Student">Student</option>
+                                  <option value="Teacher">Teacher</option>
+                                  <option value="Lab Assistant">Lab Assistant</option>
+                                </select>
+
+                                @if ($errors->has('reg'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('reg') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

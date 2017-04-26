@@ -127,9 +127,9 @@ function getData($time, $day) {
 <center>
   <?php
         if(Auth::user()->role == 'Teacher' || Auth::user()->role == 'Lab Assistant')
-              echo '<h2>Class Schidule</h2>';
+              echo '<h2>Class Schedule</h2>';
         else{
-            echo '<h2>2012 batch Class Schidule</h2>';
+            echo '<h2>Schedule</h2>';
         }
     ?>
       <div>

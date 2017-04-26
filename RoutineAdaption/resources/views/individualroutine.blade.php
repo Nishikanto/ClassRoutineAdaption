@@ -129,46 +129,95 @@ function getData($time, $day, $year, $sem) {
 
 <center>
   <?php
-        if(Auth::user()->role == 'Teacher' || Auth::user()->role == 'Lab Assistant')
-              echo '<h2>Class Schidule</h2>';
+        if(Auth::user()->role == 'Teacher' || Auth::user()->role == 'Lab Assistant'){
+              echo '<h2>Class Schedule</h2>';
+              echo '<div class="demo-info" style="margin-bottom:10px">
+                  <div class="demo-tip icon-tip">&nbsp;</div>
+                  <h3>Click and drag a class to change its schedule</h3>
+              </div>';
+            }
         else{
-            echo '<h2>2012 batch Class Schidule</h2>';
+            echo '<h2>Class Schedule</h2>';
         }
     ?>
       <div>
         <label>Batch
           <select id="batch">
             <?php
-             if($param_batch=="All"){
-               echo "<option value=\"All\" selected>All</option>";
-             }else
-                echo "<option value=\"All\">All</option>";
-              foreach ($years as $batch) {
-                  if($param_batch ==  $batch->year){
-                    echo "<option value=\"".$batch->year."\" selected>".$batch->year."</option>";
 
-                  }else
-                    echo "<option value=\"".$batch->year."\">".$batch->year."</option>";
+            if(Auth::user()->role == 'Teacher'){
+              if($param_batch=="All"){
+                echo "<option value=\"All\" selected>All</option>";
+              }else
+                 echo "<option value=\"All\">All</option>";
+               foreach ($years as $batch) {
+                   if($param_batch ==  $batch->year){
+                     echo "<option value=\"".$batch->year."\" selected>".$batch->year."</option>";
 
-              }
+                   }else
+                     echo "<option value=\"".$batch->year."\">".$batch->year."</option>";
+
+               }
+
+            }else{
+              if($param_batch=="All"){
+                //echo "<option value=\"All\" selected>All</option>";
+              }else
+                 //echo "<option value=\"All\">All</option>";
+               foreach ($years as $batch) {
+                   if($param_batch ==  $batch->year){
+                     echo "<option value=\"".$batch->year."\" selected>".$batch->year."</option>";
+
+                   }else
+                     echo "<option value=\"".$batch->year."\">".$batch->year."</option>";
+
+               }
+            }
+
+
+
+
+
              ?>
           </select>
         </lebel>
         <label>Semester
           <select id="semester">
             <?php
-            if($param_semester=="All"){
-              echo "<option value=\"All\" selected>All</option>";
-            }else
-               echo "<option value=\"All\">All</option>";
-            foreach ($semesters as $semester) {
-              if($param_semester == $semester->semester){
-                echo "<option value=\"".$semester->semester."\" selected>".$semester->semester."</option>";
 
+            if(Auth::user()->role == 'Teacher'){
+              if($param_semester=="All"){
+                echo "<option value=\"All\" selected>All</option>";
               }else
-              echo "<option value=\"".$semester->semester."\">".$semester->semester."</option>";
+                 echo "<option value=\"All\">All</option>";
+              foreach ($semesters as $semester) {
+                if($param_semester == $semester->semester){
+                  echo "<option value=\"".$semester->semester."\" selected>".$semester->semester."</option>";
 
+                }else
+                echo "<option value=\"".$semester->semester."\">".$semester->semester."</option>";
+              }
+
+            }else{
+
+              if($param_semester=="All"){
+                //echo "<option value=\"All\" selected>All</option>";
+              }else
+                 //echo "<option value=\"All\">All</option>";
+              foreach ($semesters as $semester) {
+                if($param_semester == $semester->semester){
+                  echo "<option value=\"".$semester->semester."\" selected>".$semester->semester."</option>";
+
+                }else
+                echo "<option value=\"".$semester->semester."\">".$semester->semester."</option>";
+              }
             }
+
+
+
+
+
+
             ?>
             </select>
           </lebel>
@@ -176,10 +225,7 @@ function getData($time, $day, $year, $sem) {
       </div>
 
 
-  <div class="demo-info" style="margin-bottom:10px">
-      <div class="demo-tip icon-tip">&nbsp;</div>
-      <h3>Click and drag a class to change its schidule</h3>
-  </div>
+
 
 
 
