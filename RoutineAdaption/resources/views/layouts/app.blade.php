@@ -159,13 +159,11 @@ form:after {
     -ms-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
-    background: #eae7e7 url(http://cssdeck.com/uploads/media/items/8/8bcLQqF.png) no-repeat;
     border: 1px solid #c8c8c8;
     color: #777;
     font: 13px Helvetica, Arial, sans-serif;
     margin: 0 0 10px;
-    padding: 15px 10px 15px 40px;
-    width: 80%;
+    width: 100%;
 }
 #content form input[type="text"]:focus,
 #content form input[type="password"]:focus {
