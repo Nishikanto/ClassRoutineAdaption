@@ -64,7 +64,7 @@ function getData($time, $day, $year, $sem) {
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'ClassRoutineAdaption') }}</title>
+    <title>{{ config('app.name', 'Class Routine Adaption') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
