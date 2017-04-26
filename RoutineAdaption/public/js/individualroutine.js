@@ -106,7 +106,16 @@ $(function() {
         xhr.onload = function() {
           // do something to response
           console.log(this.responseText);
-          //location.reload();
+          if (this.responseText == "0") {
+            var x = document.getElementById("snackbar");
+            x.className = "show";
+            setTimeout(function() {
+              x.className = x.className.replace("show", "");
+            }, 3000);
+          } else {
+            location.reload();
+          }
+          //
         };
         xhr.send(data);
       } else {

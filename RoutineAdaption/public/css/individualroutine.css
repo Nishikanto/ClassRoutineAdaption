@@ -72,7 +72,7 @@
         box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);    }
 
   .assignedpending{
-      background-color: #FFF9C4;
+      background-color: #FFF59D;
       text-align:center;
       box-shadow: inset 0px 1px 2px #263238;
       padding: 2px;
@@ -159,5 +159,6 @@ However, delay the fade out process for 2.5 seconds */
     from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
+
 
 </style>

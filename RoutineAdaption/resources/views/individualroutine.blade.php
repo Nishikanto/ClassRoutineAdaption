@@ -15,6 +15,17 @@ $semesters = DB::table('routines')
 
 $userid = Auth::user()->id;
 
+function convertTime($time)
+{
+  if($time<12){
+    return (string)$time.':00am';
+  }else if($time>12){
+    return (string)($time-12).':00pm';
+  }else if($time==12){
+    return (string)($time).':00pm';
+  }
+}
+
 
 function getData($time, $day, $year, $sem) {
 
@@ -48,6 +59,8 @@ function getData($time, $day, $year, $sem) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -55,6 +68,7 @@ function getData($time, $day, $year, $sem) {
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/w3.css') }}" rel="stylesheet">
 
 
     <!-- Scripts -->
@@ -451,9 +465,56 @@ function getData($time, $day, $year, $sem) {
         </table>
     </div>
 </div>
-<br/>
 <div id="snackbar">You can not put that class there</div>
 </center>
+
+<?php
+
+if(Auth::user()->role == 'CR'){
+
+  $batch = substr(Auth::user()->reg_no, 0, 4);
+
+  $data = DB::table('routines')
+            ->join('courses', 'routines.course_id', '=', 'courses.id')
+            ->join('users', 'courses.t_id', '=', 'users.id')
+            ->select('users.name', 'routines.teacher_id', 'routines.status', 'courses.course_no', 'routines.room_id', 'routines.id', 'routines.start_time', 'routines.end_time', 'courses.title')
+            ->where('status', 'pending')
+            ->where('year', $batch)
+            ->get();
+
+  foreach ($data as $row) {
+
+
+    $olddata = DB::table('records')
+              ->where('status', 'pending')
+              ->where('routine_id', $row->id)
+              ->first();
+
+    if(!empty($olddata)){
+      $new_start_time = convertTime((int) $row->start_time);
+      $new_end_time = convertTime((int) $row->end_time);
+      $old_start_time = convertTime((int) $olddata->start_time);
+      $old_end_time = convertTime((int) $olddata->end_time);
+          echo '<div style="background:white">
+            <ul class="w3-ul w3-card-4">
+              <li class="w3-padding-16">
+                <img src="change.png" class="w3-left w3-circle w3-margin-right" style="width:50px">
+                <span class="w3-large">'.$row->title.'</span><br>
+                <span>Course No: '.$row->course_no.'</span><br>
+                <span style="margin-left:67px">Previous Time: '.$old_start_time.' to '.$old_end_time.'</span><br>
+                <span style="margin-left:67px">New Time: '.$new_start_time.' to '.$new_end_time.'</span>
+                <button style="float: right; margin-left: 5px; margin-right: 5px;">Discard</button>
+                <button style="float: right; margin-left: 5px; margin-right: 5px;;">Okay</button>
+              </li>
+            </ul>
+          </div>';
+    }
+  }
+}
+?>
+
+
+
 
 <link rel="stylesheet" type="text/css" href="http://localhost:8000/css/individualroutine.css" />
 <script type="text/javascript" src="http://localhost:8000/js/individualroutine.js"></script>
