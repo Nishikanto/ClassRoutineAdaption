@@ -11,7 +11,7 @@ function getRoutines() {
 
 
 function sendDiscard(objButton) {
-  alert(objButton.value);
+  alert("Are you sure to discard?");
 
   var data = new FormData();
   data.append('id', objButton.value);
@@ -39,7 +39,7 @@ function sendDiscard(objButton) {
 }
 
 function sendOkay(objButton) {
-  alert(objButton.value);
+  alert("Are you sure to change?");
 
   var data = new FormData();
   data.append('id', objButton.value);
@@ -156,6 +156,11 @@ $(function() {
         data.append('teacher_id', $teacher_id);
 
 
+
+
+
+
+        alert("Are you sure to change & send the pending request?");
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://localhost:8000/adapt', true);
         xhr.onload = function() {

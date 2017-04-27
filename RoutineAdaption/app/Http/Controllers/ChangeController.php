@@ -28,6 +28,25 @@ class ChangeController extends Controller
 
     public function noChangeClass(Request $request)
     {
-        return $request->id;
+        $data = DB::table('records')
+                  ->where('routine_id', $request->id)
+                  ->where('status', 'pending')
+                  ->first();
+        
+      
+        $result = Routine::where('id', $request->id)
+          ->update(['status' => 'regular']);
+        $result = Routine::where('id', $request->id)
+          ->update(['day' => $data->day]);
+        $result = Routine::where('id', $request->id)
+          ->update(['start_time' => $data->start_time]);
+        $result = Routine::where('id', $request->id)
+          ->update(['end_time' => $data->end_time]);
+          
+        
+            $result = Record::where('routine_id', $request->id)
+              ->delete();
+
+        return $result;
     }
 }
