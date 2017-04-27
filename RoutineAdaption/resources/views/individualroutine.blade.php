@@ -49,6 +49,18 @@ function getData($time, $day, $year, $sem) {
     <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/demo/demo.css">
+
+    <link href="  {{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sweetalert.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/sweetalert.js') }}" ></script>
+
+
+
+
+
+
+
     <script src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
     <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
@@ -69,7 +81,6 @@ function getData($time, $day, $year, $sem) {
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/w3.css') }}" rel="stylesheet">
-
 
     <!-- Scripts -->
     <script>

@@ -11,56 +11,76 @@ function getRoutines() {
 
 
 function sendDiscard(objButton) {
-  alert("Are you sure to discard?");
-
-  var data = new FormData();
-  data.append('id', objButton.value);
-
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'http://localhost:8000/nochangeclass', true);
-  xhr.onload = function() {
-    // do something to response
-    console.log(this.responseText);
-    if (this.responseText == "0") {
-      var x = document.getElementById("snackbar");
-      x.className = "show";
-      setTimeout(function() {
-        x.className = x.className.replace("show", "");
-      }, 3000);
-    } else {
-      location.reload();
-    }
-    //
-  };
-  xhr.send(data);
 
 
+  swal({
+      title: "Confirmation",
+      text: "Are you sure to discard the change?",
+      showCancelButton: true,
+      confirmButtonText: "Confirm",
+      cancelButtonText: "Cancel",
+    },
+    function(isConfirm) {
+      if (isConfirm) {
+        var data = new FormData();
+        data.append('id', objButton.value);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8000/nochangeclass', true);
+        xhr.onload = function() {
+          // do something to response
+          console.log(this.responseText);
+          if (this.responseText == "0") {
+            var x = document.getElementById("snackbar");
+            x.className = "show";
+            setTimeout(function() {
+              x.className = x.className.replace("show", "");
+            }, 3000);
+          } else {
+            location.reload();
+          }
+          //
+        };
+        xhr.send(data);
+      }
+    });
 
 }
 
 function sendOkay(objButton) {
-  alert("Are you sure to change?");
+  swal({
+      title: "Confirmation",
+      text: "Are you sure to confirm the changing schedule?",
+      showCancelButton: true,
+      confirmButtonText: "Confirm",
+      cancelButtonText: "Cancel",
+    },
+    function(isConfirm) {
+      if (isConfirm) {
+        var data = new FormData();
+        data.append('id', objButton.value);
 
-  var data = new FormData();
-  data.append('id', objButton.value);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8000/changeclass', true);
+        xhr.onload = function() {
+          // do something to response
+          console.log(this.responseText);
+          if (this.responseText == "0") {
+            var x = document.getElementById("snackbar");
+            x.className = "show";
+            setTimeout(function() {
+              x.className = x.className.replace("show", "");
+            }, 3000);
+          } else {
+            location.reload();
+          }
+          //
+        };
+        xhr.send(data);
+      }
+    });
 
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'http://localhost:8000/changeclass', true);
-  xhr.onload = function() {
-    // do something to response
-    console.log(this.responseText);
-    if (this.responseText == "0") {
-      var x = document.getElementById("snackbar");
-      x.className = "show";
-      setTimeout(function() {
-        x.className = x.className.replace("show", "");
-      }, 3000);
-    } else {
-      location.reload();
-    }
-    //
-  };
-  xhr.send(data);
+
 
 }
 
@@ -156,28 +176,42 @@ $(function() {
         data.append('teacher_id', $teacher_id);
 
 
+        //alert("Are you sure to change & send the pending request?");
 
+        swal({
+            title: "Confirmation",
+            text: "Are you sure to change this schedule?",
+            showCancelButton: true,
+            confirmButtonText: "Confirm",
+            cancelButtonText: "Cancel",
+          },
+          function(isConfirm) {
+            if (isConfirm) {
+              //swal("Deleted!", "Your item deleted.", "success");
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', 'http://localhost:8000/adapt', true);
+              xhr.onload = function() {
+                // do something to response
+                console.log(this.responseText);
+                if (this.responseText == "0") {
+                  var x = document.getElementById("snackbar");
+                  x.className = "show";
+                  setTimeout(function() {
+                    x.className = x.className.replace("show",
+                      "");
+                  }, 3000);
+                } else {
+                  location.reload();
+                }
+                //
+              };
+              xhr.send(data);
+            } else {
+              location.reload();
+              //swal("Cancelled", "You Cancelled", "error");
+            }
+          });
 
-
-
-        alert("Are you sure to change & send the pending request?");
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:8000/adapt', true);
-        xhr.onload = function() {
-          // do something to response
-          console.log(this.responseText);
-          if (this.responseText == "0") {
-            var x = document.getElementById("snackbar");
-            x.className = "show";
-            setTimeout(function() {
-              x.className = x.className.replace("show", "");
-            }, 3000);
-          } else {
-            location.reload();
-          }
-          //
-        };
-        xhr.send(data);
       } else {
         var x = document.getElementById("snackbar");
         x.className = "show";
@@ -185,9 +219,6 @@ $(function() {
           x.className = x.className.replace("show", "");
         }, 3000);
       }
-
-
-
     }
   });
 
