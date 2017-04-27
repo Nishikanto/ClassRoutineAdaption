@@ -477,7 +477,7 @@ if(Auth::user()->role == 'CR'){
   $data = DB::table('routines')
             ->join('courses', 'routines.course_id', '=', 'courses.id')
             ->join('users', 'courses.t_id', '=', 'users.id')
-            ->select('users.name', 'routines.teacher_id', 'routines.status', 'courses.course_no', 'routines.room_id', 'routines.id', 'routines.start_time', 'routines.end_time', 'courses.title')
+            ->select('users.name', 'routines.day','routines.teacher_id', 'routines.status', 'courses.course_no', 'routines.room_id', 'routines.id', 'routines.start_time', 'routines.end_time', 'courses.title')
             ->where('status', 'pending')
             ->where('year', $batch)
             ->get();
@@ -501,10 +501,12 @@ if(Auth::user()->role == 'CR'){
                 <img src="change.png" class="w3-left w3-circle w3-margin-right" style="width:50px">
                 <span class="w3-large">'.$row->title.'</span><br>
                 <span>Course No: '.$row->course_no.'</span><br>
+                <span style="margin-left:67px">Previous Day: '.$olddata->day.'</span><br>
                 <span style="margin-left:67px">Previous Time: '.$old_start_time.' to '.$old_end_time.'</span><br>
+                <span style="margin-left:67px">New Day: '.$row->day.'</span><br>
                 <span style="margin-left:67px">New Time: '.$new_start_time.' to '.$new_end_time.'</span>
-                <button style="float: right; margin-left: 5px; margin-right: 5px;">Discard</button>
-                <button style="float: right; margin-left: 5px; margin-right: 5px;;">Okay</button>
+                <button onclick="sendDiscard(this)" value="'.$row->id.'" style="float: right; margin-left: 5px; margin-right: 5px;">Discard</button>
+                <button onclick="sendOkay(this)" value="'.$row->id.'" style="float: right; margin-left: 5px; margin-right: 5px;">Okay</button>
               </li>
             </ul>
           </div>';

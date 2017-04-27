@@ -9,6 +9,61 @@ function getRoutines() {
 
 }
 
+
+function sendDiscard(objButton) {
+  alert(objButton.value);
+
+  var data = new FormData();
+  data.append('id', objButton.value);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'http://localhost:8000/nochangeclass', true);
+  xhr.onload = function() {
+    // do something to response
+    console.log(this.responseText);
+    if (this.responseText == "0") {
+      var x = document.getElementById("snackbar");
+      x.className = "show";
+      setTimeout(function() {
+        x.className = x.className.replace("show", "");
+      }, 3000);
+    } else {
+      location.reload();
+    }
+    //
+  };
+  xhr.send(data);
+
+
+
+}
+
+function sendOkay(objButton) {
+  alert(objButton.value);
+
+  var data = new FormData();
+  data.append('id', objButton.value);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'http://localhost:8000/changeclass', true);
+  xhr.onload = function() {
+    // do something to response
+    console.log(this.responseText);
+    if (this.responseText == "0") {
+      var x = document.getElementById("snackbar");
+      x.className = "show";
+      setTimeout(function() {
+        x.className = x.className.replace("show", "");
+      }, 3000);
+    } else {
+      location.reload();
+    }
+    //
+  };
+  xhr.send(data);
+
+}
+
 $(function() {
 
   $isdrappable = 1;
@@ -130,6 +185,8 @@ $(function() {
 
     }
   });
+
+
   $('.left').droppable({
     accept: '.assigned',
     onDragEnter: function(e, source) {

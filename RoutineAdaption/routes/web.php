@@ -22,3 +22,7 @@ Route::get('/home', 'HomeController@index');
 Route::post('/adapt', 'AdaptController@adaptrequest');
 
 Route::get('/getclass/{batch}/{semester}', 'HomeController@getclass');
+
+Route::post('/changeclass','ChangeController@changeClass');
+
+Route::post('/nochangeclass','ChangeController@noChangeClass');
