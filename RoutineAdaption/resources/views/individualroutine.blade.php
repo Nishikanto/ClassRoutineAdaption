@@ -29,15 +29,34 @@ function convertTime($time)
 
 function getData($time, $day, $year, $sem) {
 
-  return $data = DB::table('routines')
+  $data = DB::table('routines')
             ->join('courses', 'routines.course_id', '=', 'courses.id')
             ->join('users', 'courses.t_id', '=', 'users.id')
-            ->select('users.name', 'routines.teacher_id', 'routines.status', 'courses.course_no', 'routines.room_id', 'routines.id', 'routines.start_time', 'routines.end_time', 'courses.title')
+			->join('rooms', 'routines.room_id', '=', 'rooms.id')
+            ->select('rooms.room_no', 'users.name', 'routines.teacher_id', 'routines.status', 'courses.course_no', 'routines.room_id', 'routines.id', 'routines.start_time', 'routines.end_time', 'courses.title')
             ->where('start_time', $time)
             ->where('day', $day)
             ->where('year', $year)
             ->where('semester', $sem)
             ->first();
+
+  if(empty($data)){
+    $data = DB::table('routines')
+              ->join('records', 'records.routine_id', '=', 'routines.id')
+              ->join('courses', 'routines.course_id', '=', 'courses.id')
+              ->join('users', 'courses.t_id', '=', 'users.id')
+			  ->join('rooms', 'routines.room_id', '=', 'rooms.id')
+              ->select('rooms.room_no', 'users.name', 'routines.teacher_id', 'courses.course_no', 'routines.room_id', 'routines.id', 'routines.start_time', 'routines.end_time', 'courses.title')
+              ->where('records.start_time', $time)
+              ->where('records.day', $day)
+              ->where('routines.year', $year)
+              ->where('routines.semester', $sem)
+              ->where('records.status', 'pending')
+              ->first();
+  }
+
+  return $data;
+
 }
 ?>
 
@@ -287,15 +306,19 @@ function getData($time, $day, $year, $sem) {
                           $subjects .= substr($value, 0, 1);
                       }
 
-                      if($data->status == 'pending'){
-                        $row = "<td id=\"1".($i+1)."\" data-dif=\"".$dif."\" data-id=\"1".($i+1)."\" data-day=\"Sunday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Sunday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id." data-dif=".$dif." data-id=".$data->id." class=\"assignedpending\"><p>(Pending)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-                      }else {
-                        if($data->teacher_id != $userid)
-                          $row = "<td id=\"1".($i+1)."\" data-dif=\"".$dif."\" data-id=\"1".($i+1)."\" data-day=\"Sunday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Sunday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id." data-dif=".$dif." data-id=".$data->id." class=\"assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-                        else
-                          $row = "<td id=\"1".($i+1)."\" data-dif=\"".$dif."\" data-id=\"1".($i+1)."\" data-day=\"Sunday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Sunday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id." data-dif=".$dif." data-id=".$data->id." class=\"popup item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-
+                      try{
+                        if($data->status == 'pending'){
+                          $row = "<td id=\"1".($i+1)."\" data-dif=\"".$dif."\" data-id=\"1".($i+1)."\" data-day=\"Sunday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Sunday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id." data-dif=".$dif." data-id=".$data->id." class=\"assignedpending\"><p>(Pending)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                        }else {
+                          if($data->teacher_id != $userid)
+                            $row = "<td id=\"1".($i+1)."\" data-dif=\"".$dif."\" data-id=\"1".($i+1)."\" data-day=\"Sunday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Sunday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id." data-dif=".$dif." data-id=".$data->id." class=\"assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                          else
+                            $row = "<td id=\"1".($i+1)."\" data-dif=\"".$dif."\" data-id=\"1".($i+1)."\" data-day=\"Sunday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Sunday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id." data-dif=".$dif." data-id=".$data->id." class=\"popup item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                        }
+                      }catch(Exception $ex){
+                        $row = "<td id=\"1".($i+1)."\" data-dif=\"".$dif."\" data-id=\"1".($i+1)."\" data-day=\"Sunday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Sunday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id." data-dif=".$dif." data-id=".$data->id." class=\"assignedrequested\"><p>(Requested)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
                       }
+
 
                       $i = $i + $dif;
                     }
@@ -329,15 +352,19 @@ function getData($time, $day, $year, $sem) {
                         $subjects .= substr($value, 0, 1);
                     }
 
-                    if($data->status == 'pending'){
-                      $row = "<td id=\"2".($i+1)."\" data-dif=\"".$dif."\" data-id=\"2".($i+1)."\" data-day=\"Monday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Monday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id." data-dif=".$dif." data-id=".$data->id."  class=\"assignedpending\"><p>(Pending)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-                    }else{
-                      if($data->teacher_id != $userid)
-                        $row = "<td id=\"2".($i+1)."\" data-dif=\"".$dif."\" data-id=\"2".($i+1)."\" data-day=\"Monday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Monday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-                      else
-                        $row = "<td id=\"2".($i+1)."\" data-dif=\"".$dif."\" data-id=\"2".($i+1)."\" data-day=\"Monday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Monday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-
+                    try{
+                      if($data->status == 'pending'){
+                        $row = "<td id=\"2".($i+1)."\" data-dif=\"".$dif."\" data-id=\"2".($i+1)."\" data-day=\"Monday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Monday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id." data-dif=".$dif." data-id=".$data->id."  class=\"assignedpending\"><p>(Pending)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                      }else{
+                        if($data->teacher_id != $userid)
+                          $row = "<td id=\"2".($i+1)."\" data-dif=\"".$dif."\" data-id=\"2".($i+1)."\" data-day=\"Monday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Monday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                        else
+                          $row = "<td id=\"2".($i+1)."\" data-dif=\"".$dif."\" data-id=\"2".($i+1)."\" data-day=\"Monday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Monday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                      }
+                    }catch(Exception $ex){
+                      $row = "<td id=\"2".($i+1)."\" data-dif=\"".$dif."\" data-id=\"2".($i+1)."\" data-day=\"Monday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Monday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id." data-dif=".$dif." data-id=".$data->id."  class=\"assignedrequested\"><p>(Requested)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
                     }
+
 
                     $i = $i + $dif;
                   }
@@ -370,15 +397,22 @@ function getData($time, $day, $year, $sem) {
                         $subjects .= substr($value, 0, 1);
                     }
 
-                    if($data->status == 'pending'){
-                      $row = "<td id=\"3".($i+1)."\" data-dif=\"".$dif."\" data-id=\"3".($i+1)."\" data-day=\"Tuesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Tuesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assignedpending\"><p>(Pending)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-                    }else{
-                      if($data->teacher_id != $userid)
-                        $row = "<td id=\"3".($i+1)."\" data-dif=\"".$dif."\" data-id=\"3".($i+1)."\" data-day=\"Tuesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Tuesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-                      else
-                        $row = "<td id=\"3".($i+1)."\" data-dif=\"".$dif."\" data-id=\"3".($i+1)."\" data-day=\"Tuesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Tuesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
+                    try{
+                      if($data->status == 'pending'){
+                        $row = "<td id=\"3".($i+1)."\" data-dif=\"".$dif."\" data-id=\"3".($i+1)."\" data-day=\"Tuesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Tuesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assignedpending\"><p>(Pending)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                      }else{
+                        if($data->teacher_id != $userid)
+                          $row = "<td id=\"3".($i+1)."\" data-dif=\"".$dif."\" data-id=\"3".($i+1)."\" data-day=\"Tuesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Tuesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                        else
+                          $row = "<td id=\"3".($i+1)."\" data-dif=\"".$dif."\" data-id=\"3".($i+1)."\" data-day=\"Tuesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Tuesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                      }
+                    }catch(Exception $ex){
+                      $row = "<td id=\"3".($i+1)."\" data-dif=\"".$dif."\" data-id=\"3".($i+1)."\" data-day=\"Tuesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Tuesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assignedrequested\"><p>(Requested)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
 
                     }
+
+
+
                     $i = $i + $dif;
                   }
                   else{
@@ -410,15 +444,20 @@ function getData($time, $day, $year, $sem) {
                     foreach ($words as $value) {
                         $subjects .= substr($value, 0, 1);
                     }
-                    if($data->status == 'pending'){
-                      $row = "<td id=\"4".($i+1)."\" data-dif=\"".$dif."\" data-id=\"4".($i+1)."\" data-day=\"Wednesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Wednesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assignedpending\"><p>(Pending)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-                    }else{
-                      if($data->teacher_id != $userid)
-                        $row = "<td id=\"4".($i+1)."\" data-dif=\"".$dif."\" data-id=\"4".($i+1)."\" data-day=\"Wednesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Wednesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-                      else
-                        $row = "<td id=\"4".($i+1)."\" data-dif=\"".$dif."\" data-id=\"4".($i+1)."\" data-day=\"Wednesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Wednesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
 
+                    try{
+                      if($data->status == 'pending'){
+                        $row = "<td id=\"4".($i+1)."\" data-dif=\"".$dif."\" data-id=\"4".($i+1)."\" data-day=\"Wednesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Wednesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assignedpending\"><p>(Pending)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                      }else{
+                        if($data->teacher_id != $userid)
+                          $row = "<td id=\"4".($i+1)."\" data-dif=\"".$dif."\" data-id=\"4".($i+1)."\" data-day=\"Wednesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Wednesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                        else
+                          $row = "<td id=\"4".($i+1)."\" data-dif=\"".$dif."\" data-id=\"4".($i+1)."\" data-day=\"Wednesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Wednesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                      }
+                    }catch(Exception $ex){
+                      $row = "<td id=\"4".($i+1)."\" data-dif=\"".$dif."\" data-id=\"4".($i+1)."\" data-day=\"Wednesday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Wednesday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assignedrequested\"><p>(Requested)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
                     }
+
                     $i = $i + $dif;
                   }
                   else{
@@ -450,15 +489,21 @@ function getData($time, $day, $year, $sem) {
                     foreach ($words as $value) {
                         $subjects .= substr($value, 0, 1);
                     }
-                    if($data->status == 'pending'){
-                      $row = "<td id=\"5".($i+1)."\" data-dif=\"".$dif."\" data-id=\"5".($i+1)."\" data-day=\"Thursday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Thursday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assignedpending\"><p>(Pending)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-                    }else{
-                      if($data->teacher_id != $userid)
-                        $row = "<td id=\"5".($i+1)."\" data-dif=\"".$dif."\" data-id=\"5".($i+1)."\" data-day=\"Thursday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Thursday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
-                      else
-                        $row = "<td id=\"5".($i+1)."\" data-dif=\"".$dif."\" data-id=\"5".($i+1)."\" data-day=\"Thursday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Thursday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_id."</p></div></td>";
 
+                    try{
+                      if($data->status == 'pending'){
+                        $row = "<td id=\"5".($i+1)."\" data-dif=\"".$dif."\" data-id=\"5".($i+1)."\" data-day=\"Thursday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Thursday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assignedpending\"><p>(Pending)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                      }else{
+                        if($data->teacher_id != $userid)
+                          $row = "<td id=\"5".($i+1)."\" data-dif=\"".$dif."\" data-id=\"5".($i+1)."\" data-day=\"Thursday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Thursday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                        else
+                          $row = "<td id=\"5".($i+1)."\" data-dif=\"".$dif."\" data-id=\"5".($i+1)."\" data-day=\"Thursday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Thursday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"item assigned\"><p>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
+                      }
+                    }catch(Exception $ex){
+                      $row = "<td id=\"5".($i+1)."\" data-dif=\"".$dif."\" data-id=\"5".($i+1)."\" data-day=\"Thursday\" data-time=".$time[$i]." colspan = ".$dif."><div data-day=\"Thursday\" data-time=".$time[$i]." data-room_id=".$data->room_id." data-teacher_id=".$data->teacher_id."  data-dif=".$dif." data-id=".$data->id." class=\"assignedrequested\"><p>(Requested)</br>".$data->course_no."</br>".$subjects."</br>Room - ".$data->room_no."</p></div></td>";
                     }
+
+
                     $i = $i + $dif;
                   }
                   else{

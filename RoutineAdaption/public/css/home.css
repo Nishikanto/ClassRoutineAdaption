@@ -67,6 +67,19 @@
       padding: 2px;
       padding-left: 2px;
       box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);    }
+
+      .assignedpending{
+          background-color: #FFF59D;
+          text-align:center;
+          padding: 2px;
+          box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);    }
+
+          .assignedrequested{
+              background-color: #A5D6A7;
+              text-align:center;
+              padding: 2px;
+              box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);    }
+
     .trash{
         background-color:red;
     }
