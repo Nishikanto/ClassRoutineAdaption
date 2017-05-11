@@ -19,6 +19,7 @@ class CreateRecordsTable extends Migration
           $table->string('end_time');
           $table->string('day');
           $table->string('status');
+          $table->string('comment');
           $table->unsignedInteger('user_id');
           $table->unsignedInteger('room_id');
           $table->unsignedInteger('routine_id');

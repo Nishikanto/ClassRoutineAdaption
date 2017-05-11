@@ -15,7 +15,7 @@ class ChangeController extends Controller
     {
 
         $result = Routine::where('id', $request->id)
-          ->update(['status' => 'regular']);
+          ->update(['status' => 'changed']);
 
         if($result){
           $result = Record::where('routine_id', $request->id)

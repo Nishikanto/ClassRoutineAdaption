@@ -26,3 +26,5 @@ Route::get('/getclass/{batch}/{semester}', 'HomeController@getclass');
 Route::post('/changeclass','ChangeController@changeClass');
 
 Route::post('/nochangeclass','ChangeController@noChangeClass');
+
+Route::post('/comments','AdaptController@storeComments');

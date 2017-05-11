@@ -9,6 +9,34 @@ function getRoutines() {
 
 }
 
+function onSubmit(objButton){
+  
+  var comment = document.getElementById(objButton.value).value;
+  //console.log(comment);
+
+  var data = new FormData();
+  data.append('id', objButton.value);
+  data.append('comment', comment);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', 'http://localhost:8000/comments', true);
+  xhr.onload = function() {
+    // do something to response
+    console.log(this.responseText);
+    if (this.responseText == "0") {
+      var x = document.getElementById("snackbar");
+      x.className = "show";
+      setTimeout(function() {
+        x.className = x.className.replace("show", "Something is wrong! try again");
+      }, 3000);
+    } else {
+      location.reload();
+    }
+    //
+  };
+  xhr.send(data);
+}
+
 
 function sendDiscard(objButton) {
 
@@ -99,15 +127,15 @@ $(function() {
       $tableid = $(this).attr('data-id');
       $tableidc1 = $tableid.charAt(0);
       $tableidc2 = parseInt($tableid.slice(1, $tableid.length));
-      //console.log(parseInt($tableid));
+      console.log(parseInt($tableid));
       $dif = $(source).parent('td').attr('data-dif');
-      //console.log(parseInt($dif));
+      console.log(parseInt($dif));
 
       $isdrappable = 0;
 
       if (parseInt($dif) > 1) {
         for ($j = $tableidc2; $j < (parseInt($dif) + $tableidc2); $j++) {
-          //console.log($tableidc1 + $j)
+          console.log($tableidc1 + $j)
 
           try {
             $diftemp = document.getElementById($tableidc1 + $j).dataset
@@ -118,9 +146,20 @@ $(function() {
 
           $isdrappable = parseInt($isdrappable) + parseInt(
             $diftemp);
-          //console.log(parseInt($diftemp));
+          console.log(parseInt($diftemp));
         }
       }
+
+      if($isdrappable == 0){
+        //console.log($(this).attr('data-room'))
+        //console.log($(source).parent('td').attr('data-room'))
+
+        if($(this).attr('data-room').includes($(source).parent('td').attr('data-room')) == false)
+          $isdrappable = 0;
+        else
+          $isdrappable = 1;
+      }
+
       if ($isdrappable == 0) {
         $(this).addClass('over');
         //console.log('droppable');
@@ -142,7 +181,7 @@ $(function() {
       $(this).removeClass('notover');
 
 
-      if ($isdrappable == 0 && $(source).hasClass('assigned')) {
+      if ($isdrappable == 0 && $(source).hasClass('assigned') || $(source).hasClass('assignedDone')) {
         $(this).append(source);
         $(source).parent('td').addClass('drop');
         $id = $(source).attr('data-id');
@@ -207,7 +246,7 @@ $(function() {
               };
               xhr.send(data);
             } else {
-              location.reload();
+              window.location.reload();
               //swal("Cancelled", "You Cancelled", "error");
             }
           });

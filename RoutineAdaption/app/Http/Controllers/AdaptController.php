@@ -9,6 +9,17 @@ use DB;
 
 class AdaptController extends Controller
 {
+
+    public function storeComments(Request $request)
+    {
+
+      $result = Record::where('routine_id', $request->id)
+              ->update(['comment' => $request->comment]);
+
+      return $result;
+    }
+
+    
     public function adaptrequest(Request $request)
     {
         $id = $request->id;
@@ -38,6 +49,7 @@ class AdaptController extends Controller
           $Record->end_time = $oldtime + $dif;
           $Record->day = $oldday;
           $Record->status = 'pending';
+          $Record->comment = '';
           $Record->user_id = (int)$teacher_id;
           $Record->room_id = $room_id;
           $Record->routine_id = $id;

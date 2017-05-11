@@ -1,4 +1,29 @@
 <style type="text/css">
+    .foo {
+    float: left;
+    
+    margin: 5px;
+    border: 1px solid rgba(0, 0, 0, .2);
+    }
+
+    .pending {
+      width: 20px;
+    height: 20px;
+      background: #FFF59D;
+    }
+
+    .requested {
+      width: 20px;
+    height: 20px;
+      background: #EF9A9A;
+    }
+
+    .changed {
+      width: 20px;
+    height: 20px;
+      background: #A5D6A7;
+    }
+
     .left{
         width:120px;
         float:left;
@@ -71,17 +96,24 @@
       padding: 2px;
       box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);    }
 
-  .assignedpending{
+   .assignedpending{
       background-color: #FFF59D;
       text-align:center;
       padding: 2px;
       box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);    }
 
-      .assignedrequested{
+    .assignedrequested{
+          background-color: #EF9A9A;
+          text-align:center;
+          padding: 2px;
+          box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);    }
+
+    .assignedDone{
           background-color: #A5D6A7;
           text-align:center;
           padding: 2px;
           box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);    }
+
 
     .trash{
         background-color:red;
